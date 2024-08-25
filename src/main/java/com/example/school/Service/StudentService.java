@@ -64,12 +64,11 @@ public class StudentService {
         if (student == null) {
             throw new ApiException("Student not found for this id: " + id);
         }
-
-        List<Course> courses = new ArrayList<>(student.getCourses());
-        for (Course course : courses) {
-            course.getStudents().remove(student);
-            courseRepository.save(course);
+        
+        for (Course c : student.getCourses()) {
+            c.getStudents().remove(student);
         }
+        student.getCourses().clear();
         student.setMajor(major);
         return studentRepository.save(student);
     }
